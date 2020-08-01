@@ -68,6 +68,8 @@ legend {
 	margin-bottom: 1.125em;
 }
 
+
+
 input[type="text"],
 input[type="email"],
 legend {
@@ -126,6 +128,93 @@ select,
 option {
 	font-family: 'roboto', sans-serif;
 }
+
+.part {
+	position: relative;
+}
+
+#colors-js-puns {
+	display: none;
+}
+
+/* alert Messages */
+
+#alert-activities {
+	margin-top: 0;
+	color: red;
+}
+
+.alert-message, .alert-credit {
+	border-radius: 5px;
+	font-size: 12px;
+	text-align: center;
+	position: absolute;
+	background: #8e322f;
+	width: 160px;
+	padding: 7px 10px;
+	color: #fff;
+	display: none;
+}
+
+.alert-message:after, .alert-credit:after {
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(136, 183, 213, 0);
+	border-right-color: #8e322f;
+	border-width: 8px;
+	margin-top: -8px;
+}
+
+.alert-message {
+	left: 73.8%;
+	top: 78px;
+}
+
+.alert-message:after {
+	right: 50%;
+	top: -6px;
+	transform: rotateZ(90deg);
+}
+
+#cc-num + .alert-credit {
+	left: 46%;
+	top: -20px;
+}
+
+#cc-num + .alert-credit:after {
+	transform: rotateZ(-90deg);
+	bottom: -15px;
+	left: 50%;
+}
+
+#zip + .alert-credit, #cvv + .alert-credit {
+	right: 0;
+	top: 80px;
+	width: 138px;
+}
+
+#zip + .alert-credit:after, #cvv + .alert-credit:after {
+	transform: rotateZ(90deg);
+	bottom: 100%;
+	left: 50%;
+}
+
+.red-border {
+	border-color: red;
+	border-width: 1px;
+}
+
+/* alert Ul */
+
+#show-error li {
+	color: red;
+	list-style-type: none;
+}
+
 
 /* 
 	Tshirt classes to make disapear when click different dessigne .
