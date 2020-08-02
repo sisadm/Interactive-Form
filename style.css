@@ -133,9 +133,6 @@ option {
 	position: relative;
 }
 
-#colors-js-puns {
-	display: none;
-}
 
 /* alert Messages */
 
@@ -227,19 +224,6 @@ option {
 .default option:nth-child(7) {
 	display: none;
 }
-
-.firstColor option:nth-child(4), 
-.firstColor option:nth-child(5), 
-.firstColor option:nth-child(6) {
-	display: none;
-}
-
-.secondColor option:nth-child(1), 
-.secondColor option:nth-child(2), 
-.secondColor option:nth-child(3) {
-	display: none;
-} 
-
 
 /* ================================= 
   Page Styles
