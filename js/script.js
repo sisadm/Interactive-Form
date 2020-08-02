@@ -57,43 +57,69 @@ let totalH3 = document.querySelector(".totalMoney");
     // add color option if nothing select 
     function addDefault() {
             let opt = document.createElement('option');
+            opt.classList.add("select-tshirt");
             opt.innerText = "Please select a T-shirt theme.";
             opt.setAttribute("value", "default");
             tShirtColors.add(opt, tShirtColors[0]);
             tShirtColors.options[0].selected = true;
     }
 
-    // delete default 
-    function deleteDefault() {
-        tShirtColors.options[0].remove();
+    function defaultClass() {
+        tShirtColors.classList.add("default")
+        colorDiv.style.display = "none";
     }
 
-    // clear class and add choosen one
-    function classChange(name) {
-        tShirtColors.classList.remove("default", "firstColor", "secondColor");
-        tShirtColors.classList.add(name);
+    // function to hide/show Colors 
+
+    function firstDesign() {
+        colorOptions[0].style.display = "";
+        colorOptions[0].selected;
+        tShirtColors.value = colorOptions[0].value;
+        colorOptions[1].style.display = "";
+        colorOptions[2].style.display = "";
+        colorOptions[3].style.display = "none";
+        colorOptions[4].style.display = "none";
+        colorOptions[5].style.display = "none";
     }
+
+    function secondDesign() {
+        colorOptions[0].style.display = "none";
+        colorOptions[1].style.display = "none";
+        colorOptions[2].style.display = "none";
+        colorOptions[3].style.display = "";
+        colorOptions[3].selected;
+        tShirtColors.value = colorOptions[3].value;
+        colorOptions[4].style.display = "";
+        colorOptions[5].style.display = "";
+    }
+    
 
     // T-shirt theme select 
     tShirtTheme.addEventListener('change', (e) => {
         if(e.target.value == "js puns" || e.target.value == "heart js") {   
-            deleteDefault()
+            let selectTshirt = document.querySelector(".select-tshirt");
+            if(selectTshirt) {
+                selectTshirt.remove();
+            }
             if(e.target.value == "js puns") {
-                colorDiv.style.display = "inherit";
-                classChange("firstColor");
+                colorDiv.style.display = "";
+                tShirtColors.classList.remove("default")
+                firstDesign();
             }
             if(e.target.value == "heart js") {
-                colorDiv.style.display = "inherit";
-                classChange("secondColor");
+                colorDiv.style.display = "";
+                tShirtColors.classList.remove("default")
+                secondDesign();
             }
         } 
         if(e.target.value == "default" ) {
             colorDiv.style.display = "none";
-            classChange("default");
+            tShirtColors.classList.add("default")
             addDefault();
         }
     });
 
+    defaultClass();
 
 // Activities 
 
@@ -191,10 +217,11 @@ let totalH3 = document.querySelector(".totalMoney");
 // Payment 
 
 function hideAndShow(value) {
-    creditCardDiv.style.display = "none";
+    creditCardDiv.style.display = "";
     paypalDiv.style.display = "none";
     bitcoinDiv.style.display = "none";
     if(value !== "") {
+        creditCardDiv.style.display = "none";
         let divId = document.querySelector("#"+value);
         divId.style.display = "";
     }
@@ -284,6 +311,7 @@ submit.addEventListener('click', () => {
     let cardNumLi = document.querySelector(".cardNumError");
     let zipNumLi = document.querySelector(".zipNumError");
     let cvvNumLi = document.querySelector(".cvvNumError");
+    let paymenLi = document.querySelector(".paymentError");
 
     // name check
     if(name.value == "") {
@@ -369,56 +397,72 @@ submit.addEventListener('click', () => {
     }    
     
     // card check 
-    if(cardNumbers.value.length < 13 || cardNumbers.value.length  > 16) {
-        let cardLength = cardNumbers.value.length;
-        li =  document.createElement("li");
-        li.classList.add("cardNumError");
-        li.innerHTML = `*Card numbers need to be 13 - 16 digits. You enter ${cardLength} digits.`;
-        if(!cardNumLi) {
-            errorUl.appendChild(li);
-            cardNumbers.classList.add("red-border");
-        }
-    } else {
-        if(cardNumLi) {
-            cardNumLi.remove();
-            cardNumbers.classList.remove("red-border");
+    if(payment.value == "credit-card") {
+        if(cardNumbers.value.length < 13 || cardNumbers.value.length  > 16) {
+            let cardLength = cardNumbers.value.length;
+            li =  document.createElement("li");
+            li.classList.add("cardNumError");
+            li.innerHTML = `*Card numbers need to be 13 - 16 digits. You enter ${cardLength} digits.`;
+            if(!cardNumLi) {
+                errorUl.appendChild(li);
+                cardNumbers.classList.add("red-border");
+            }
+        } else {
+            if(cardNumLi) {
+                cardNumLi.remove();
+                cardNumbers.classList.remove("red-border");
+            }   
         }   
-    }   
-    
-    // zip check
-    if(zipNumbers.value.length < 5 || zipNumbers.value.length  > 5) {
-        let zipLength = cardNumbers.value.length;
-        li =  document.createElement("li");
-        li.classList.add("zipNumError");
-        li.innerHTML = `*Zip Code need to be 5 digits. You enter ${zipLength} digits.`;
-        if(!zipNumLi) {
-            errorUl.appendChild(li);
-            zipNumbers.classList.add("red-border");
+        
+        // zip check
+        if(zipNumbers.value.length < 5 || zipNumbers.value.length  > 5) {
+            let zipLength = cardNumbers.value.length;
+            li =  document.createElement("li");
+            li.classList.add("zipNumError");
+            li.innerHTML = `*Zip Code need to be 5 digits. You enter ${zipLength} digits.`;
+            if(!zipNumLi) {
+                errorUl.appendChild(li);
+                zipNumbers.classList.add("red-border");
+            }
+        } else {
+            if(zipNumLi) {
+                zipNumLi.remove();
+                zipNumbers.classList.remove("red-border");
+            }   
         }
-    } else {
-        if(zipNumLi) {
-            zipNumLi.remove();
-            zipNumbers.classList.remove("red-border");
-        }   
+        
+        // CVV check
+        if(cvvNumbers.value.length !== 3) {
+            let cvvLength = cvvNumbers.value.length;
+            li =  document.createElement("li");
+            li.classList.add("cvvNumError");
+            li.innerHTML = `*CVV need to be 3 digits. You enter ${cvvLength} digits.`;
+            if(!cvvNumLi) {
+                errorUl.appendChild(li);
+                cvvNumbers.classList.add("red-border");
+            }
+        } else {
+            if(cvvNumLi) {
+                cvvNumLi.remove();
+                cvvNumbers.classList.remove("red-border");
+            }   
+        } 
     }
-    
-    // CVV check
-    if(cvvNumbers.value.length !== 3) {
-        let cvvLength = cvvNumbers.value.length;
-        li =  document.createElement("li");
-        li.classList.add("cvvNumError");
-        li.innerHTML = `*CVV need to be 3 digits. You enter ${cvvLength} digits.`;
-        if(!cvvNumLi) {
+
+    if(payment.value == "select method") {
+        li = document.createElement("li");
+        li.classList.add("paymentError");
+        li.innerHTML = "*Please select one from paymet option.";
+        if(!paymenLi) {
             errorUl.appendChild(li);
-            cvvNumbers.classList.add("red-border");
+            payment.classList.add("red-border")
         }
     } else {
-        if(cvvNumLi) {
-            cvvNumLi.remove();
-            cvvNumbers.classList.remove("red-border");
-        }   
-    } 
-
+        if(paymenLi) {
+            paymenLi.remove();
+            payment.classList.remove("red-border");
+        }
+    }
 
 });
 
