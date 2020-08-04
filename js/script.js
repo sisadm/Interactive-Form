@@ -9,15 +9,14 @@ let tShirtColors = document.querySelector('#color');
 let colorDiv = document.querySelector("#colors-js-puns");
 let colorOptions = document.querySelectorAll('#color option');
 let activities = document.querySelector(".activities");
+let activitiesDiv = document.querySelector("#activities-error-div");
 let regInputs = document.querySelectorAll(".activities input");
 let regLabels = document.querySelectorAll(".activities label");
 let total = 0;
 let payment = document.querySelector("#payment");
-let paymentDefault = document.querySelector(".paymentDefault");
 let creditCardDiv = document.querySelector("#credit-card");
 let paypalDiv = document.querySelector("#paypal");
 let bitcoinDiv = document.querySelector("#bitcoin");
-let alertActivities = document.querySelector("#alert-activities");
 let cardNumbers = document.querySelector("#cc-num");
 let zipNumbers = document.querySelector("#zip");
 let cvvNumbers = document.querySelector("#cvv");
@@ -123,6 +122,16 @@ let totalH3 = document.querySelector(".totalMoney");
 
 // Activities 
 
+    // create error message for pick at least one activities 
+
+    function createErrorM() {
+        let p = document.createElement("p");
+        p.setAttribute("id", "alert-activities");
+        p.innerHTML = "*You need to pick at least one Activitie";
+        activitiesDiv.appendChild(p);
+    }
+
+    createErrorM();
     // set disable input and change label color
 
     function disable(num) {
@@ -137,6 +146,7 @@ let totalH3 = document.querySelector(".totalMoney");
     }
 
     activities.addEventListener('change', (e) => {
+        let alertActivities = document.querySelector("#alert-activities");
 
         let cost = parseInt(e.target.getAttribute("data-cost"));
         if(e.target.name == "all") {
@@ -229,7 +239,6 @@ function hideAndShow(value) {
 }
 
 payment.addEventListener("change", (e) => {
-    paymentDefault.style.display = "none";
     let elementValue = e.target.value;
     if(e.target.value == "credit-card"){
         hideAndShow(elementValue);
@@ -447,6 +456,14 @@ submit.addEventListener('click', () => {
                 cvvNumbers.classList.remove("red-border");
             }   
         } 
+    }
+
+    if(payment.value == "paypal" || payment.value == "bitcoin") {
+        if(cvvNumLi || zipNumLi || cardNumLi) {
+            cvvNumLi.remove();
+            zipNumLi.remove();
+            cardNumLi.remove();
+        }
     }
 
     if(payment.value == "select method") {

@@ -136,9 +136,15 @@ option {
 
 /* alert Messages */
 
+
+
 #alert-activities {
 	margin-top: 0;
 	color: red;
+}
+
+#activities-error-div {
+	height: 38px;
 }
 
 .alert-message, .alert-credit {

@@ -82,7 +82,8 @@
 
       <fieldset class="activities">
         <legend>Register for Activities</legend>
-        <p id="alert-activities">*You need to pick at least one Activitie.</p>
+        <div id="activities-error-div">
+        </div>  
           <label>
             <input type="checkbox" name="all" data-cost="200"> Main Conference — $200
           </label>
@@ -117,7 +118,6 @@
 
         <label for="payment">I'm going to pay with:</label>
         <select id="payment" name="user-payment">
-          <option class="paymentDefault" value="select method">Select Payment Method</option>
           <option value="credit-card">Credit Card</option>
           <option value="paypal">PayPal</option>
           <option value="bitcoin">Bitcoin</option>
