@@ -9,7 +9,6 @@ let tShirtColors = document.querySelector('#color');
 let colorDiv = document.querySelector("#colors-js-puns");
 let colorOptions = document.querySelectorAll('#color option');
 let activities = document.querySelector(".activities");
-let activitiesDiv = document.querySelector("#activities-error-div");
 let regInputs = document.querySelectorAll(".activities input");
 let regLabels = document.querySelectorAll(".activities label");
 let total = 0;
@@ -22,6 +21,29 @@ let zipNumbers = document.querySelector("#zip");
 let cvvNumbers = document.querySelector("#cvv");
 let submit = document.querySelector("button");
 
+
+
+// create function which will make a tag and append to what we choose
+
+function appendTag(className, message, appendTo, tag) {
+    let newTag = document.createElement(`${tag}`);
+    newTag.classList.add(className);
+    newTag.innerHTML = message;
+    appendTo.appendChild(newTag);
+}
+
+// add span elements to inputs 
+let nameDiv = document.querySelector(".namePart");
+let emialDiv = document.querySelector(".emailPart");
+let ccNumDiv = document.querySelector("#ccNumDiv");
+let zipNumDiv = document.querySelector("#zipNumDiv");
+let cvvNumDiv = document.querySelector("#cvvNumDiv");
+
+appendTag("alert-message", "Can only contain letters a-z.", nameDiv, "span");
+appendTag("alert-message", "Must be a valid email address.", emialDiv, "span");
+appendTag("alert-credit", "The credit card number between 13 - 16 digits.", ccNumDiv, "span");
+appendTag("alert-credit", "Zip code need to be 5 digits.", zipNumDiv, "span");
+appendTag("alert-credit", "Please enter 3 digits.", cvvNumDiv, "span");
 
 // create total cost part 
 
@@ -122,17 +144,6 @@ let totalH3 = document.querySelector(".totalMoney");
 
 // Activities 
 
-    // create error message for pick at least one activities 
-
-    function createErrorM() {
-        let p = document.createElement("p");
-        p.setAttribute("id", "alert-activities");
-        p.innerHTML = "*You need to pick at least one Activitie";
-        activitiesDiv.appendChild(p);
-    }
-
-    createErrorM();
-    // set disable input and change label color
 
     function disable(num) {
         regInputs[num].setAttribute("disabled", true);
@@ -146,8 +157,6 @@ let totalH3 = document.querySelector(".totalMoney");
     }
 
     activities.addEventListener('change', (e) => {
-        let alertActivities = document.querySelector("#alert-activities");
-
         let cost = parseInt(e.target.getAttribute("data-cost"));
         if(e.target.name == "all") {
             if(e.target.checked) {
@@ -212,16 +221,6 @@ let totalH3 = document.querySelector(".totalMoney");
         } else {
             totalH3.style.display = "none";
         }      
-
-        for(let i = 0; i < regInputs.length; i++) {
-            if(regInputs[i].checked == true) {
-                alertActivities.style.display = "none";            
-                break;
-            } else {
-                alertActivities.style.display = "";
-            }
-
-        }  
     });
 
 // Payment 
@@ -302,16 +301,14 @@ zipNumbers.addEventListener('input', createListener(validZipNumbers));
 cvvNumbers.addEventListener('input', createListener(validCvvNumbers));
 
 
-// create Ul which will contain any error Li
-let ul = document.createElement("ul");
-ul.setAttribute("id", "show-error");
-form.appendChild(ul);
+
+
 
 // event listener to submit the form and check everything is correct
 
-submit.addEventListener('click', () => {
-    let li;
-    let errorUl = document.querySelector("#show-error");
+submit.addEventListener('click', (e) => {
+
+    let nameSpan = nameDiv.querySelector("span");
     let nameLi = document.querySelector(".nameError");
     let emailLi = document.querySelector(".emailError");
     let otherLi = document.querySelector(".otherTitleError");
@@ -323,12 +320,10 @@ submit.addEventListener('click', () => {
     let paymenLi = document.querySelector(".paymentError");
 
     // name check
-    if(name.value == "") {
-        li =  document.createElement("li");
-        li.classList.add("nameError");
-        li.innerHTML = "*Please provide a name."
+    if(name.value == "" || nameSpan.style.display == "inherit") {
+        e.preventDefault();
         if(!nameLi) {
-            errorUl.appendChild(li);
+            appendTag("nameError", "*Please provide a name.", nameDiv, "p");
             name.classList.add("red-border");
         }
     } else {
@@ -336,17 +331,14 @@ submit.addEventListener('click', () => {
             nameLi.remove();
             name.classList.remove("red-border");
         }
-        
     }
 
     //email check
     let emailAlert = document.querySelector("#mail + .alert-message");
     if(email.value == "" || emailAlert.style.display !== "none") {
-        li =  document.createElement("li");
-        li.classList.add("emailError");
-        li.innerHTML = "*Please fill the form with correct email.";
+        e.preventDefault();
         if(!emailLi) {
-            errorUl.appendChild(li);
+            appendTag("emailError", "*Please fill the form with correct email.", emialDiv, "p");
             email.classList.add("red-border");
         }
     } else {
@@ -358,11 +350,10 @@ submit.addEventListener('click', () => {
 
     //job check
     if(titles.value == "other" && otherTitle.value == "") {
-        li =  document.createElement("li");
-        li.classList.add("otherTitleError");
-        li.innerHTML = "*Please fill the other Job field.";
+        e.preventDefault();
+        let jobDiv = document.querySelector(".jobPart");
         if(!otherLi) {
-            errorUl.appendChild(li);
+            appendTag("otherTitleError", "*Please fill the other Job field.", jobDiv, "p");
             otherTitle.classList.add("red-border");
         }
     } else {
@@ -376,11 +367,14 @@ submit.addEventListener('click', () => {
     // t-shirt check
 
     if(tShirtColors.value == "default") {
-        li =  document.createElement("li");
-        li.classList.add("tshirtError");
-        li.innerHTML = "*Please choose one T-shirt.";
+        e.preventDefault();
+        let tshirtFieldset = document.querySelector("fieldset:nth-child(2)");
+        let tshirtFirstDiv = document.querySelectorAll(".shirt div")[0];
         if(!tshirtLi) {
-            errorUl.appendChild(li);
+            let p = document.createElement("p");
+            p.classList.add("tshirtError");
+            p.innerHTML = "*Please choose one T-shirt.";
+            tshirtFieldset.insertBefore(p, tshirtFirstDiv);
             tShirtTheme.classList.add("red-border");
         }
     } else {
@@ -391,13 +385,11 @@ submit.addEventListener('click', () => {
     }
 
     // activities check
-    let activitiesAlert = document.querySelector("#alert-activities");
-    if(activitiesAlert.style.display !== "none") {
-        li =  document.createElement("li");
-        li.classList.add("actError");
-        li.innerHTML = "*Please choose at least one from Activities.";
+    if(totalH3.style.display == "none") {
+        e.preventDefault();
+        let activitiesDiv = document.querySelector("#activities-error-div");
         if(!actLi) {
-            errorUl.appendChild(li);
+            appendTag("actError", "*You need to pick at least one Activitie", activitiesDiv, "p");
         }
     } else {
         if(actLi) {
@@ -407,13 +399,12 @@ submit.addEventListener('click', () => {
     
     // card check 
     if(payment.value == "credit-card") {
+        let cardFieldset = document.querySelector("fieldset:nth-child(4)");
         if(cardNumbers.value.length < 13 || cardNumbers.value.length  > 16) {
+            e.preventDefault();
             let cardLength = cardNumbers.value.length;
-            li =  document.createElement("li");
-            li.classList.add("cardNumError");
-            li.innerHTML = `*Card numbers need to be 13 - 16 digits. You enter ${cardLength} digits.`;
             if(!cardNumLi) {
-                errorUl.appendChild(li);
+                appendTag("cardNumError", `*Card numbers need to be 13 - 16 digits. You enter ${cardLength} digits.`, cardFieldset, "p");
                 cardNumbers.classList.add("red-border");
             }
         } else {
@@ -425,12 +416,10 @@ submit.addEventListener('click', () => {
         
         // zip check
         if(zipNumbers.value.length < 5 || zipNumbers.value.length  > 5) {
+            e.preventDefault();
             let zipLength = cardNumbers.value.length;
-            li =  document.createElement("li");
-            li.classList.add("zipNumError");
-            li.innerHTML = `*Zip Code need to be 5 digits. You enter ${zipLength} digits.`;
             if(!zipNumLi) {
-                errorUl.appendChild(li);
+                appendTag("zipNumError", `*Zip Code need to be 5 digits. You enter ${zipLength} digits.`, cardFieldset, "p");
                 zipNumbers.classList.add("red-border");
             }
         } else {
@@ -442,12 +431,10 @@ submit.addEventListener('click', () => {
         
         // CVV check
         if(cvvNumbers.value.length !== 3) {
+            e.preventDefault();
             let cvvLength = cvvNumbers.value.length;
-            li =  document.createElement("li");
-            li.classList.add("cvvNumError");
-            li.innerHTML = `*CVV need to be 3 digits. You enter ${cvvLength} digits.`;
             if(!cvvNumLi) {
-                errorUl.appendChild(li);
+                appendTag("cvvNumError", `*CVV need to be 3 digits. You enter ${cvvLength} digits.`, cardFieldset, "p");
                 cvvNumbers.classList.add("red-border");
             }
         } else {
@@ -467,10 +454,9 @@ submit.addEventListener('click', () => {
     }
 
     if(payment.value == "select method") {
-        li = document.createElement("li");
-        li.classList.add("paymentError");
-        li.innerHTML = "*Please select one from paymet option.";
+        e.preventDefault();
         if(!paymenLi) {
+            appendTag("paymentError", "*Please select one from paymet option.", cardFieldset, "p");
             errorUl.appendChild(li);
             payment.classList.add("red-border")
         }
