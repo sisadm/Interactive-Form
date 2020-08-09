@@ -211,12 +211,13 @@ option {
 	border-width: 1px;
 }
 
-/* alert Ul */
+/* alert P */
 
-#show-error li {
+.nameError,.emailError, .otherTitleError, .actError, .tshirtError, .cardNumError, .zipNumError, .cvvNumError, .paymentError  {
 	color: red;
-	list-style-type: none;
+	margin-top: -1em;
 }
+
 
 
 /* 
@@ -243,6 +244,16 @@ option {
 .shirt div {
 	float: left;
 	margin-right: .85em;
+}
+
+.shirt p {
+	display: block;
+}
+
+#colors-js-puns:after {
+	content: " ";
+	display: table;
+	clear: both;
 }
 
 .shirt-box {
