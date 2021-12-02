@@ -19,7 +19,7 @@ let bitcoinDiv = document.querySelector("#bitcoin");
 let cardNumbers = document.querySelector("#cc-num");
 let zipNumbers = document.querySelector("#zip");
 let cvvNumbers = document.querySelector("#cvv");
-
+let submit = document.querySelector("button");
 
 
 
